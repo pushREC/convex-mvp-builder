@@ -1,0 +1,134 @@
+# Convex MVP - Application Specification
+
+## Overview
+
+[EDIT THIS SECTION]
+Describe your MVP in 2-3 sentences. What does it do? Who is it for?
+
+Example: "A task management app for small teams. Users can create, assign, and track tasks with real-time updates. Focuses on simplicity and speed."
+
+## Technology Stack (DO NOT CHANGE)
+
+### Frontend
+- Framework: Next.js 16.1 (App Router)
+- UI Library: React 19 + shadcn/ui + Tailwind CSS
+- State: Convex real-time subscriptions (automatic)
+
+### Backend
+- Runtime: Convex serverless functions
+- Database: Convex (real-time, type-safe, auto-scaling)
+- Authentication: @convex-dev/auth (password + optional OAuth)
+
+## GUARDRAILS - Agent MUST Follow
+
+### NEVER MODIFY (Protected Files)
+- convex/auth.ts - Authentication configuration
+- convex/auth.config.ts - JWT provider config
+- convex/_generated/* - Auto-generated types
+- app/ConvexClientProvider.tsx - Provider setup
+- app/layout.tsx - Root layout with providers
+
+### EXTEND ONLY (Follow Existing Patterns)
+- convex/schema.ts - ADD new tables, never remove existing
+- convex/http.ts - ADD routes if needed, never remove
+
+### REFERENCE PATTERNS
+- See convex/tasks.ts for CRUD function pattern
+- See components/tasks/* for React + Convex hooks pattern
+- Use `getAuthUserId(ctx)` for authentication checks
+- Use indexes for query performance
+
+## Data Model
+
+### Existing Tables (DO NOT REMOVE)
+- users - Managed by Convex Auth
+- tasks - Example CRUD table (can be removed once you have your own tables)
+- Auth system tables (authAccounts, authSessions, etc.)
+
+### New Tables Required
+
+[EDIT THIS SECTION - Define your data model]
+
+Example:
+```
+products:
+  - name: string (required)
+  - description: string (optional)
+  - price: number (required)
+  - category: "electronics" | "clothing" | "food"
+  - inStock: boolean
+  - createdBy: id("users")
+  - indexes: by_category, by_createdBy
+
+orders:
+  - productId: id("products")
+  - userId: id("users")
+  - quantity: number
+  - status: "pending" | "processing" | "shipped" | "delivered"
+  - orderDate: number (timestamp)
+  - indexes: by_userId, by_status
+```
+
+## Features to Build
+
+### Core Features (Must Have)
+
+[EDIT THIS SECTION]
+
+1. **[Feature Name]**
+   - Description: What it does
+   - User actions: What the user can do
+   - Expected behavior: What should happen
+
+Example:
+1. **Product Listing**
+   - Description: Display all products in a grid layout
+   - User actions: View products, filter by category, search by name
+   - Expected behavior: Products load instantly, filters apply in real-time
+
+2. **Add to Cart**
+   - Description: Allow users to add products to shopping cart
+   - User actions: Click "Add to Cart" button, adjust quantity
+   - Expected behavior: Cart updates immediately, shows total count
+
+### Secondary Features (Should Have)
+
+[EDIT THIS SECTION - Nice to have features]
+
+### Edge Cases to Handle
+
+[EDIT THIS SECTION - Error states, empty states]
+
+Example:
+- Empty product list: Show "No products found" message
+- Failed checkout: Show error toast, preserve cart
+- Unauthorized access: Redirect to login
+
+## UI Requirements
+
+### Layout
+- Responsive design (mobile-first)
+- Navigation: Header with logo, nav links, auth status
+- Main content area with appropriate max-width
+
+### Components (Use shadcn/ui)
+- Buttons, Forms, Cards, Dialogs
+- Toast notifications for feedback
+- Loading states with skeletons
+
+### Styling
+- Use Tailwind CSS utility classes
+- Follow existing color scheme in tailwind.config.js
+- Dark mode support (if time permits)
+
+## Non-Functional Requirements
+
+### Performance
+- Initial page load < 2 seconds
+- Real-time updates via Convex subscriptions
+- Optimistic updates for mutations
+
+### Security
+- All data operations require authentication
+- Validate inputs on server (Convex functions)
+- Use HTTPS in production

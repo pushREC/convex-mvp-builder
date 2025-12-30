@@ -1,0 +1,84 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Next.js
+.next/
+out/
+
+# Production
+build
+dist
+
+# Convex
+.convex/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
+.claude_settings.json
+
+# Testing
+coverage
+test-results/
+playwright-report/
+
+# Playwright MCP screenshots
+.playwright-mcp/
+
+# Python (for autonomous agent)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+.eggs/
+*.egg-info/
+*.egg
+venv/
+.venv/
+ENV/
+
+# Agent runtime logs (keep .gitkeep)
+logs/*.json
+
+# Agent generated files
+generations/
+feature_list.json
+claude-progress.txt
+
+# Private keys (NEVER commit these)
+*.pem
+private_key.pem
+public_key.pem

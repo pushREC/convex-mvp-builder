@@ -1,0 +1,7 @@
+{
+  "puppeteer": {
+    "command": "npx",
+    "args": ["puppeteer-mcp-server"],
+    "description": "Browser automation for end-to-end testing"
+  }
+}
