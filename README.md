@@ -159,6 +159,99 @@ npx convex dev           # Start Convex dev server
 npx convex logs          # View function logs
 ```
 
+## Timing Expectations
+
+> **This takes a long time to run!** Building a full MVP is not instant.
+
+| Phase | Duration | What Happens |
+|-------|----------|--------------|
+| **Session 1 (Initializer)** | 10-20+ minutes | Generates `feature_list.json` with 50-200 test cases, creates schema, initial Convex functions |
+| **Sessions 2+ (Coding)** | 5-15 min each | Implements 1-3 features per session, tests with browser automation |
+| **Full MVP (60 features)** | 30-50 sessions | Complete implementation with all tests passing |
+
+### Iteration Guidelines
+
+| App Complexity | Features | Recommended `--max-iterations` |
+|----------------|----------|--------------------------------|
+| Simple demo | 5-10 | 5-10 |
+| Medium app | 15-30 | 15-25 |
+| Full MVP | 40-60+ | 30-50 or **unlimited** (no flag) |
+
+**Recommended for MVPs:** Run without `--max-iterations` for unlimited sessions:
+
+```bash
+python3 autonomous_agent.py --project-dir .
+```
+
+The agent will continue until all features pass or you stop it with `Ctrl+C`.
+
+### Build Order
+
+The agent builds in this order (by design):
+
+1. **Schema** → Convex tables and indexes
+2. **Convex Functions** → Backend queries, mutations, actions
+3. **React Components** → Frontend UI
+4. **Browser Tests** → Verify each feature works
+
+Backend must complete before frontend because Convex generates TypeScript types that React components depend on.
+
+### Resuming Work
+
+The agent **automatically resumes** from where it left off:
+
+```bash
+# First run - creates feature_list.json, implements some features
+python3 autonomous_agent.py --project-dir . --max-iterations 10
+
+# Later - detects feature_list.json, continues from previous progress
+python3 autonomous_agent.py --project-dir .
+```
+
+Progress is tracked in:
+- `feature_list.json` - Test cases with `"passes": true/false`
+- `claude-progress.txt` - Session notes
+- Git commits - After each feature
+
+## Autonomous Agent vs Claude Code
+
+This project uses **two different ways** to interact with Claude:
+
+| System | What It Is | Use For |
+|--------|------------|---------|
+| `autonomous_agent.py` | Python harness using Claude SDK | Building the app automatically (multi-session, browser testing, auto-commits) |
+| Claude Code (chat) | Your conversation with Claude | Debugging, reviewing code, one-off fixes |
+
+### Important: They Are Separate Systems
+
+When the autonomous agent stops (max iterations or `Ctrl+C`):
+
+| What You Say | What Happens |
+|--------------|--------------|
+| "Run the agent again" | Claude Code restarts harness ✅ |
+| "Restart the harness" | Claude Code restarts harness ✅ |
+| "`python3 autonomous_agent.py`" | Claude Code restarts harness ✅ |
+| "Continue building" | **Ambiguous** - Claude Code may code directly instead of using harness |
+
+**Best practice:** When resuming, explicitly ask to run the autonomous agent:
+
+```
+You: Run the autonomous agent to continue building
+
+Claude Code: [runs] python3 autonomous_agent.py --project-dir .
+```
+
+### Why This Matters
+
+The harness provides:
+- Fresh context window per session (no token limit issues)
+- Automatic browser testing with screenshots
+- Feature-by-feature commits
+- Security sandbox for bash commands
+- Progress tracking in `feature_list.json`
+
+If Claude Code builds directly (without the harness), you lose these benefits.
+
 ## Authentication Setup
 
 ### Email/Password (Requires JWT Keys)

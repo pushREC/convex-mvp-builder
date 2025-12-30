@@ -149,7 +149,7 @@ async def run_autonomous_agent(
         # Check max iterations
         if max_iterations and iteration > max_iterations:
             print(f"\nReached max iterations ({max_iterations})")
-            print("To continue, run the script again")
+            print("To continue, run the script again (without --max-iterations for unlimited)")
             break
 
         # Print session header
@@ -191,6 +191,15 @@ async def run_autonomous_agent(
     print("=" * 70)
     print(f"\nProject directory: {project_dir}")
     print_progress_summary(project_dir)
+
+    print("\n" + "-" * 70)
+    print("  TO CONTINUE BUILDING:")
+    print("-" * 70)
+    print(f"\n  python3 autonomous_agent.py --project-dir {project_dir.resolve()}")
+    print()
+    print("  The agent will automatically resume from where it left off.")
+    print("  Run without --max-iterations for unlimited sessions.")
+    print("-" * 70)
 
     print("\n" + "-" * 70)
     print("  TO RUN THE GENERATED APPLICATION:")
