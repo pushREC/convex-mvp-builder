@@ -199,5 +199,47 @@ npm run build
 
 ---
 
+## Available Bash Commands
+
+The agent runs in a security sandbox. Here's what's allowed:
+
+### Always Allowed
+
+**File Operations:**
+- `ls`, `cat`, `head`, `tail`, `wc`, `grep`, `find`
+- `cp`, `mkdir`, `touch`
+- `pwd`, `cd`
+
+**Development:**
+- `npm`, `node`, `npx`
+- `python`, `python3`, `pip`, `pip3`, `uv`
+- `git` (all subcommands)
+- `make`, `cargo`, `go`
+
+**Utilities:**
+- `curl`, `jq`
+- `echo`, `printf`, `tee`
+- `sort`, `uniq`, `tr`, `cut`, `sed`, `awk`
+- `xargs`, `date`, `env`, `which`
+- `basename`, `dirname`, `realpath`
+- `test`, `[`, `true`, `false`
+- `ps`, `lsof`, `sleep`, `timeout`
+
+### Restricted (Extra Validation)
+
+- `pkill` - Only dev processes allowed: `node`, `npm`, `npx`, `vite`, `next`, `python`, `python3`, `uvicorn`, `gunicorn`
+- `chmod` - Only `+x` mode allowed (making files executable)
+- `init.sh` - Only `./init.sh`, `bash init.sh`, or `sh init.sh`
+
+### Blocked (Not Allowed)
+
+- `rm`, `rmdir` - Prevents accidental file deletion
+- `sudo`, `su` - No privilege escalation
+- `wget` - Use `curl` instead
+- `ssh`, `scp` - No remote access
+- `dd`, `mkfs` - No disk operations
+
+---
+
 *This document is the single source of truth for agent guardrails.*
 *See also: `utils/security.py` for programmatic enforcement.*

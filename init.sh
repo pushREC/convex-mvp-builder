@@ -37,7 +37,28 @@ echo "Node.js $(node -v) detected"
 echo ""
 
 # =============================================================================
-# STEP 2: Install npm dependencies
+# STEP 2: Check Python version (for autonomous agent)
+# =============================================================================
+echo "Checking Python version..."
+
+PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")' 2>/dev/null)
+if [[ -z "$PYTHON_VERSION" ]]; then
+    echo "WARNING: Python 3 not found."
+    echo "  The autonomous agent requires Python 3.10+"
+    echo "  Install from: https://www.python.org/downloads/"
+    echo ""
+elif [[ $(echo "$PYTHON_VERSION < 3.10" | bc -l) -eq 1 ]]; then
+    echo "WARNING: Python $PYTHON_VERSION detected."
+    echo "  The autonomous agent requires Python 3.10+"
+    echo "  Install from: https://www.python.org/downloads/"
+    echo ""
+else
+    echo "Python $PYTHON_VERSION detected"
+    echo ""
+fi
+
+# =============================================================================
+# STEP 3: Install npm dependencies
 # =============================================================================
 echo "Installing npm dependencies..."
 npm install
@@ -45,7 +66,7 @@ npm install
 echo ""
 
 # =============================================================================
-# STEP 3: Check Convex CLI authentication
+# STEP 4: Check Convex CLI authentication
 # =============================================================================
 echo "Checking Convex CLI status..."
 
@@ -126,3 +147,28 @@ else
     echo ""
     echo "=============================================="
 fi
+
+# =============================================================================
+# STEP 5: Check git remote
+# =============================================================================
+echo ""
+CURRENT_REMOTE=$(git remote get-url origin 2>/dev/null)
+if [[ "$CURRENT_REMOTE" == *"pushREC/convex-mvp-builder"* ]]; then
+    echo "=============================================="
+    echo "  GIT REMOTE SETUP"
+    echo "=============================================="
+    echo ""
+    echo "  Your git remote still points to the template repository."
+    echo "  To push your work to your own GitHub repo:"
+    echo ""
+    echo "  Option 1 - Update remote manually:"
+    echo "    git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO.git"
+    echo ""
+    echo "  Option 2 - Use GitHub CLI:"
+    echo "    gh repo create my-app --private --source=. --remote=origin --push"
+    echo ""
+    echo "=============================================="
+fi
+
+echo ""
+echo "Run './scripts/preflight.sh' to verify all agent dependencies."

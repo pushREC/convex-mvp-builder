@@ -20,6 +20,18 @@ This project combines:
 | Node.js | 20.9.0+ | `node -v` |
 | Python | 3.10+ | `python3 --version` |
 | Git | Any | `git --version` |
+| Claude CLI | Latest | `claude --version` |
+| claude-code-sdk | ≥0.0.25 | `pip3 show claude-code-sdk` |
+
+### Verify Setup
+
+Before running the agent, verify all dependencies are installed:
+
+```bash
+./scripts/preflight.sh
+```
+
+This checks Python, Node.js, Git, Claude authentication, and the SDK.
 
 ## Quick Start
 
@@ -251,6 +263,34 @@ The harness provides:
 - Progress tracking in `feature_list.json`
 
 If Claude Code builds directly (without the harness), you lose these benefits.
+
+## Known Limitations
+
+### Browser Automation
+
+The agent uses Puppeteer MCP for browser testing. On first run, you may need to grant permissions when prompted by Claude Code.
+
+### Git Remote
+
+After cloning, your git remote still points to this template repository. To push your own work:
+
+```bash
+# Option 1: Update remote
+git remote set-url origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+
+# Option 2: Use GitHub CLI
+gh repo create my-app --private --source=. --remote=origin --push
+```
+
+The `init.sh` script will remind you about this.
+
+### Sandbox Restrictions
+
+The agent runs in a security sandbox. Some bash commands are blocked for safety:
+- `rm`, `rmdir` - Prevents accidental deletion
+- `sudo`, `su` - No privilege escalation
+
+See `GUARDRAILS.md` for the full list of allowed commands.
 
 ## Authentication Setup
 

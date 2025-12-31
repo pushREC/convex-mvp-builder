@@ -126,6 +126,30 @@ ALLOWED_COMMANDS = {
     "make",
     "cargo",
     "go",
+    # Common utilities (for scripting and testing)
+    "curl",       # HTTP requests for API testing
+    "jq",         # JSON parsing
+    "echo",       # Output (needed for scripts)
+    "printf",     # Formatted output
+    "xargs",      # Command chaining
+    "sort",       # Sorting output
+    "uniq",       # Deduplication
+    "tr",         # Character translation
+    "cut",        # Column extraction
+    "sed",        # Stream editing
+    "awk",        # Text processing
+    "date",       # Timestamps
+    "env",        # Environment inspection
+    "which",      # Command location
+    "basename",   # Path manipulation
+    "dirname",    # Path manipulation
+    "realpath",   # Path resolution
+    "test",       # Conditionals
+    "[",          # Conditionals (alias for test)
+    "true",       # Success exit
+    "false",      # Failure exit
+    "tee",        # Write to file and stdout
+    "timeout",    # Command timeout
 }
 
 # Commands needing extra validation
