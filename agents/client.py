@@ -26,6 +26,26 @@ PUPPETEER_TOOLS = [
     "mcp__puppeteer__puppeteer_evaluate",
 ]
 
+# Playwright MCP tools for browser automation (better React support)
+# Playwright's browser_type sends actual keystrokes which triggers React onChange
+PLAYWRIGHT_TOOLS = [
+    "mcp__playwright__browser_navigate",
+    "mcp__playwright__browser_snapshot",
+    "mcp__playwright__browser_click",
+    "mcp__playwright__browser_type",
+    "mcp__playwright__browser_fill_form",
+    "mcp__playwright__browser_take_screenshot",
+    "mcp__playwright__browser_hover",
+    "mcp__playwright__browser_select_option",
+    "mcp__playwright__browser_press_key",
+    "mcp__playwright__browser_evaluate",
+    "mcp__playwright__browser_wait_for",
+    "mcp__playwright__browser_tabs",
+    "mcp__playwright__browser_navigate_back",
+    "mcp__playwright__browser_close",
+    "mcp__playwright__browser_install",
+]
+
 # Built-in tools
 BUILTIN_TOOLS = [
     "Read",
@@ -124,8 +144,9 @@ def create_client(project_dir: Path, model: str) -> ClaudeSDKClient:
                 # Bash permission granted here, but actual commands are validated
                 # by the bash_security_hook (see security.py for allowed commands)
                 "Bash(*)",
-                # Allow Puppeteer MCP tools for browser automation
+                # Allow browser automation MCP tools
                 *PUPPETEER_TOOLS,
+                *PLAYWRIGHT_TOOLS,
             ],
         },
     }
@@ -142,7 +163,7 @@ def create_client(project_dir: Path, model: str) -> ClaudeSDKClient:
     print("   - Sandbox enabled (OS-level bash isolation)")
     print(f"   - Filesystem restricted to: {project_dir.resolve()}")
     print("   - Bash commands restricted to allowlist (see security.py)")
-    print("   - MCP servers: puppeteer (browser automation)")
+    print("   - MCP servers: puppeteer, playwright (browser automation)")
     print()
 
     return ClaudeSDKClient(
@@ -152,9 +173,11 @@ def create_client(project_dir: Path, model: str) -> ClaudeSDKClient:
             allowed_tools=[
                 *BUILTIN_TOOLS,
                 *PUPPETEER_TOOLS,
+                *PLAYWRIGHT_TOOLS,
             ],
             mcp_servers={
-                "puppeteer": {"command": "npx", "args": ["puppeteer-mcp-server"]}
+                "puppeteer": {"command": "npx", "args": ["puppeteer-mcp-server"]},
+                "playwright": {"command": "npx", "args": ["@anthropic/mcp-server-playwright"]},
             },
             hooks={
                 "PreToolUse": [
