@@ -1,3 +1,10 @@
+---
+created: 2025-12-30
+tags: [type/project]
+---
+
+[[README]]
+
 # ULTIMATE Next.js + Convex + Vercel Reference
 
 **The Definitive Zero-Gap Context Document for AI-Assisted MVP Development**

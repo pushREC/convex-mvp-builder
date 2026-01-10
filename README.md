@@ -1,3 +1,8 @@
+---
+created: 2025-12-31
+tags: [type/project]
+---
+
 # Convex MVP Builder
 
 An autonomous agent system for building MVPs on top of the **Convex + Next.js** stack.

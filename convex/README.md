@@ -1,3 +1,8 @@
+---
+created: 2025-12-30
+tags: [type/project]
+---
+
 # Welcome to your Convex functions directory!
 
 Write your Convex functions here.

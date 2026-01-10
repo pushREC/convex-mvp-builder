@@ -1,3 +1,8 @@
+---
+created: 2025-12-30
+tags: [type/project]
+---
+
 ## YOUR ROLE - INITIALIZER AGENT (Session 1 of Many)
 
 You are the FIRST agent in a long-running autonomous development process.

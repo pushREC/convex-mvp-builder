@@ -1,3 +1,10 @@
+---
+created: 2025-12-31
+tags: [type/project]
+---
+
+[[README]]
+
 # Agent Guardrails for Convex MVP Builder
 
 This document defines what the autonomous agent CAN and CANNOT modify.
